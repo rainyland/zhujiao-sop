@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>助教手册 · 值班全流程</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230F2E4F'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='%23fff' font-family='serif'%3E助%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --navy:#0F2E4F;--ink:#12212E;--body:#3C4A57;--muted:#6B7A88;--faint:#9AA6B2;
+    --line:#D3DAE2;--paper:#EDF0F3;--card:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{background:var(--paper);color:var(--ink);
+    font-family:"PingFang SC","Microsoft YaHei","Source Han Sans SC",system-ui,sans-serif;
+    font-size:15px;line-height:1.7;padding:24px 14px 56px;}
+  .sheet{max-width:900px;margin:0 auto;background:var(--card);border:1px solid var(--line);}
+
+  .tabs{display:flex;flex-wrap:wrap;gap:2px 4px;padding:10px 18px;background:var(--navy);}
+  .tabs a{color:#B9C7D4;text-decoration:none;font-size:13px;padding:3px 9px;border-radius:2px;}
+  .tabs a.on{color:#fff;background:rgba(255,255,255,.1);}
+  .tabs a:hover{color:#fff;}
+
+  .hero{padding:20px 26px 16px;border-bottom:2px solid var(--navy);}
+  .kicker{font-size:11.5px;letter-spacing:.14em;color:var(--muted);}
+  .hero h1{font-size:28px;line-height:1.2;font-weight:700;margin-top:6px;letter-spacing:-.01em;}
+  .hero .lead{margin-top:6px;font-size:13.5px;color:var(--body);}
+
+  /* 封面 */
+  .vlog{padding:24px 26px 18px;border-bottom:2px solid var(--navy);position:relative;}
+  .ep{position:absolute;right:26px;top:24px;text-align:right;}
+  .ep-no{display:block;font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.1em;}
+  .ep-cap{display:block;margin-top:2px;font-size:10.5px;color:var(--faint);}
+  .vkick{display:flex;align-items:center;gap:7px;font-size:11.5px;letter-spacing:.13em;color:var(--muted);}
+  .play{width:11px;height:11px;fill:var(--navy);flex:none;}
+  .vlog h1{font-size:30px;line-height:1.18;font-weight:700;margin-top:8px;letter-spacing:-.02em;}
+  .vlog h1 span{color:var(--navy);}
+  .vsub{margin-top:10px;font-size:13px;color:var(--body);}
+  .vline{margin-top:4px;font-size:12px;color:var(--muted);letter-spacing:.05em;}
+
+  .chapters{padding:14px 26px 12px;border-bottom:1px solid var(--line);}
+  .ch-h{font-size:10.5px;letter-spacing:.16em;color:var(--muted);margin-bottom:2px;}
+  .ch{display:grid;grid-template-columns:92px 42px minmax(0,1fr);align-items:baseline;gap:0 12px;
+    padding:7px 0;border-bottom:1px solid var(--line);}
+  .ch:last-of-type{border-bottom:none;}
+  .ch .t{font-size:12.5px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .ch .c{font-size:12.5px;font-weight:700;}
+  .ch .d{font-size:12.5px;color:var(--body);}
+  .caltip{display:grid;grid-template-columns:92px 1fr;gap:0 12px;align-items:baseline;
+    margin-top:2px;padding:7px 0 0;border-top:1px solid var(--line);font-size:12.5px;color:var(--body);}
+  .caltip .ct{font-size:12.5px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;}
+
+  .looks{display:grid;grid-template-columns:1fr;gap:1px 26px;}
+  .looks p{font-size:12.8px;color:var(--body);line-height:1.6;padding:3px 0;}
+  .looks b{color:var(--ink);font-weight:700;margin-right:8px;}
+  @media (min-width:620px){.looks{grid-template-columns:1fr 1fr;}}
+
+  .view{padding:0 0 8px;}
+  .view:not(.active){display:none;}
+  .sec{padding:14px 26px 2px;border-top:1px solid var(--line);}
+  .sec:first-child{border-top:none;}
+  .sec-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 9px;margin-bottom:6px;}
+  .sec-h h2{font-size:16px;font-weight:700;letter-spacing:-.01em;}
+  .sec-h .hint{font-size:11.5px;color:var(--muted);}
+
+  .num-list{list-style:none;counter-reset:n;}
+  .num-list li{counter-increment:n;position:relative;padding:6px 0 6px 24px;
+    border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.6;color:var(--body);}
+  .num-list li::before{content:counter(n);position:absolute;left:0;top:7px;font-size:11px;font-weight:700;
+    color:var(--navy);border:1px solid var(--line);width:16px;height:16px;line-height:14px;text-align:center;}
+  .num-list b{color:var(--ink);font-weight:700;margin-right:4px;}
+
+  .tips{list-style:none;}
+  .tips li{padding:5px 0;border-bottom:1px solid var(--line);font-size:13px;line-height:1.6;color:var(--body);}
+  .tips b{color:var(--ink);font-weight:700;}
+  .tips b::after{content:"：";font-weight:400;color:var(--muted);}
+
+  .sym{font-size:12.8px;line-height:1.6;color:var(--body);background:#F6F8FA;border:1px solid var(--line);
+    padding:9px 12px;margin:8px 0 0;}
+  .sym b{color:var(--ink);}
+
+  .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table.diff{width:100%;border-collapse:collapse;font-size:12.5px;table-layout:fixed;min-width:540px;}
+  table.diff th,table.diff td{border-bottom:1px solid var(--line);padding:6px 8px;
+    vertical-align:top;text-align:left;line-height:1.5;}
+  table.diff thead th{font-size:12px;color:var(--muted);font-weight:600;border-bottom:1.5px solid var(--navy);letter-spacing:.04em;}
+  table.diff tbody th{color:var(--ink);font-weight:700;background:#F6F8FA;font-size:12px;}
+  table.diff td{color:var(--body);}
+  table.diff .no{color:#8A3A2F;}
+
+  .rules{list-style:none;}
+  .rules li{padding:6px 0;border-bottom:1px solid var(--line);font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.5;}
+  .rules li::before{content:"";display:inline-block;width:5px;height:5px;background:var(--navy);
+    vertical-align:3px;margin-right:8px;}
+  @media (min-width:620px){.rules{display:grid;grid-template-columns:1fr 1fr;column-gap:26px;}}
+
+  .prompt{margin:8px 0 4px;border:1px solid var(--line);background:#FCFCFD;}
+  .prompt-head{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:7px 11px;border-bottom:1px solid var(--line);background:#F6F8FA;}
+  .prompt-head .ptitle{font-size:12px;color:var(--muted);}
+  .copy-btn{flex:0 0 auto;min-height:30px;padding:3px 11px;font-size:12px;color:var(--navy);
+    background:#fff;border:1px solid var(--line);cursor:pointer;}
+  .copy-btn:hover{border-color:var(--navy);}
+  .copy-btn[data-copied="true"]{color:#2E5B3E;border-color:#C3D3C6;background:#F2F7F3;}
+  .prompt pre{margin:0;padding:12px 13px 14px;font-family:"Consolas",ui-monospace,"Courier New",monospace;
+    font-size:12.4px;line-height:1.75;color:#2B3038;white-space:pre-wrap;word-break:break-word;}
+
+  .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,12px);z-index:60;padding:9px 16px;
+    background:var(--navy);color:#FFF;font-size:13px;opacity:0;pointer-events:none;transition:opacity .16s ease,transform .16s ease;}
+  .toast.show{opacity:1;transform:translate(-50%,0);}
+
+  .end{font-size:12.8px;line-height:1.6;color:var(--body);margin:12px 26px 0;padding-top:10px;border-top:1px solid var(--line);}
+  .end b{color:var(--ink);font-weight:700;}
+  .foot{margin:8px 26px 16px;font-size:10.5px;color:var(--faint);}
+
+  .layout{display:block;}
+  .rail{display:none;}
+  .main{min-width:0;}
+  @media (min-width:820px){
+    .layout{display:grid;grid-template-columns:160px minmax(0,1fr);}
+    .rail{display:block;padding:24px 12px 24px 14px;border-right:1px solid var(--line);
+      align-self:start;position:sticky;top:0;background:#fff;}
+    .rail .grp{font-size:10px;letter-spacing:.16em;color:#AAB6C2;margin:0 0 10px 9px;}
+    .rail a{display:flex;align-items:baseline;gap:9px;text-decoration:none;color:var(--body);
+      font-size:12.5px;line-height:1.5;padding:6px 0 6px 9px;border-left:2px solid transparent;}
+    .rail a .n{font-size:10px;color:#AAB6C2;}
+    .rail a:hover{color:var(--navy);}
+    .rail a.on{color:var(--navy);font-weight:700;border-left-color:var(--navy);}
+    .rail a.on .n{color:var(--navy);}
+    .rail .grp2{margin-top:20px;}
+  }
+
+  @media print{
+    @page{size:A4;margin:10mm;}
+    body{background:#fff;font-size:9.6pt;line-height:1.45;padding:0;}
+    .sheet{max-width:none;border:none;}
+    .tabs,.rail,.copy-btn,.toast{display:none !important;}
+    .layout{display:block;}
+    .view:not(.active){display:none;}
+    .hero{padding:0 0 6px;}
+    .vlog{padding:0 0 8px;}
+    .vlog h1{font-size:18pt;}
+    .sec{padding:6px 0 0;border-top:none;break-inside:avoid;}
+    .num-list li,.tips li{padding:2px 0 2px 20px;font-size:9pt;}
+    .tips li{padding:2px 0;}
+    table.diff{font-size:9pt;}
+    table.diff th,table.diff td{padding:3px 5px;}
+    .end{margin:6px 0 0;}
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <nav class="tabs" aria-label="分页">
+    <a href="#day">值班单</a>
+    <a href="#start">开工</a>
+    <a href="#steps">四步</a>
+    <a href="#log">录表</a>
+    <a href="#teachers">老师差异</a>
+    <a href="#sun">周日</a>
+    <a href="#finish">收工</a>
+  </nav>
+
+  <div class="layout">
+    <aside class="rail" aria-label="目录">
+      <p class="grp">周六</p>
+      <a href="#day"><span class="n">01</span><span>值班单</span></a>
+      <a href="#start"><span class="n">02</span><span>开工</span></a>
+      <a href="#steps"><span class="n">03</span><span>四步</span></a>
+      <a href="#log"><span class="n">04</span><span>录表</span></a>
+      <a href="#finish"><span class="n">05</span><span>收工</span></a>
+      <p class="grp grp2">参照</p>
+      <a href="#teachers"><span class="n">06</span><span>老师差异</span></a>
+      <a href="#sun"><span class="n">07</span><span>周日</span></a>
+    </aside>
+    <div class="main">
+
+  <!-- 01 值班单 -->
+  <section class="view active" id="day">
+    <header class="vlog">
+      <div class="ep"><span class="ep-no">EP.01</span><span class="ep-cap">周六 · 9 小时 40 分</span></div>
+      <p class="vkick"><svg class="play" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5.6v12.8L20.4 12z"/></svg>助教的一天 · 周六篇</p>
+      <h1>欢迎收看<span>《助教的一天》</span></h1>
+      <p class="vsub">8:00 到场　·　17:40 收工</p>
+      <p class="vline">课前测 → 考勤拍照 → 改作业 → 录表发反馈</p>
+    </header>
+
+    <section class="chapters">
+      <p class="ch-h">今天的章节</p>
+      <div class="ch"><span class="t">08:20–10:20</span><span class="c">A</span><span class="d">春晓 8 号 · 王琴 9 号 · 余 10 号</span></div>
+      <div class="ch"><span class="t">10:40–12:40</span><span class="c">B</span><span class="d">春晓 9 号 · 余（教室看表）</span></div>
+      <div class="ch"><span class="t">13:30–15:30</span><span class="c">C</span><span class="d">余 10 号 · 王琴只做表</span></div>
+      <div class="ch"><span class="t">15:40–17:40</span><span class="c">D</span><span class="d">余 8 号 · 春晓 17 号 · 王琴只做表</span></div>
+      <p class="caltip"><span class="ct">12:30</span>点外卖：武汉体育馆，进门 30 米右转，绿牌上二楼</p>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><h2>踩了要返工</h2></div>
+      <div class="looks">
+        <p><b>考勤别漏班</b>群里的班全打</p>
+        <p><b>元调班没课前测</b>不拿不放</p>
+        <p><b>照片认脸</b>正脸、人数对表</p>
+        <p><b>名字别发错</b>按备注核</p>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><h2>四条硬规则</h2></div>
+      <ul class="rules">
+        <li>以当天考勤表为准</li>
+        <li>拿不准就问对应老师</li>
+        <li>错了当场说、当场改</li>
+        <li>一件做完就报备</li>
+      </ul>
+    </section>
+    <p class="foot">老师、教室、时段一律以当天考勤表为准</p>
+  </section>
+
+  <!-- 02 开工 -->
+  <section class="view" id="start">
+    <header class="hero">
+      <p class="kicker">到机构 · 开工</p>
+      <h1>先做 3 件，再进教室</h1>
+    </header>
+
+    <section class="sec">
+      <ol class="num-list">
+        <li><b>拿考勤表</b>三楼小路工位，架子最上，拿封面周五的合订本</li>
+        <li><b>数课前测</b>二楼 34 号器材室，按表上人数放各老师桌上</li>
+        <li><b>打招呼</b>见老师和前台，群里各加一遍，说你是新助教</li>
+      </ol>
+      <p class="sym"><b>做完才算：</b>表在手、每班老师都打完；课前测放好报备；老师知道你是谁。</p>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><h2>场地</h2></div>
+      <ul class="tips">
+        <li><b>三楼</b>办公、打印（密码 jd123456）、考勤表</li>
+        <li><b>二楼</b>全部教室（数字＝教室号）、34 号器材室、前台吃饭</li>
+        <li><b>名单找小路要</b>打印前先清空上一版</li>
+        <li><b>不给家长微信</b>让家长找小路老师</li>
+      </ul>
+    </section>
+    <p class="foot">少一份课前测、找不到表，都直接问小路老师</p>
+  </section>
+
+  <!-- 03 四步 -->
+  <section class="view" id="steps">
+    <header class="hero">
+      <p class="kicker">每班 4 步</p>
+      <h1>四步怎么做</h1>
+      <p class="lead">一个班做完再做下一个。</p>
+    </header>
+
+    <section class="sec">
+      <ol class="num-list">
+        <li><b>课前测</b>放老师桌上，看清年级讲次；元调班不放 → 放好报备</li>
+        <li><b>考勤</b>第二节打，老师勾完再数一遍 → 拍照正脸竖屏，一班一条发群</li>
+        <li><b>改作业</b>先收再改，答案在群 → 课间叫名字发回</li>
+        <li><b>反馈</b>电子表→系统话术→群里再改 → 班级私发（备注周六X班），个人发三人群</li>
+      </ol>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><h2>三个不忘</h2></div>
+      <ul class="tips">
+        <li><b>不发</b>试听、请假、线上、退费</li>
+        <li><b>调课的娃</b>勾原班，不另加名字</li>
+        <li><b>时间不够</b>先考勤照片，再改作业，最后反馈</li>
+      </ul>
+    </section>
+    <p class="foot">反馈最晚周日发完；漏班是事故</p>
+  </section>
+
+  <!-- 04 录表 -->
+  <section class="view" id="log">
+    <header class="hero">
+      <p class="kicker">录表 · 系统</p>
+      <h1>数字对了才发</h1>
+    </header>
+
+    <section class="sec">
+      <div class="sec-h"><h2>系统两个坑</h2></div>
+      <ul class="tips">
+        <li><b>全勾了还写要订正</b>改成「订正已完成」</li>
+        <li><b>知识点图导不出</b>截图发老师，别卡着</li>
+      </ul>
+    </section>
+
+    <p class="end"><b>发前自检：</b>数字对 → 名字对 → 这个娃该不该发。</p>
+  </section>
+
+  <!-- 05 收工 -->
+  <section class="view" id="finish">
+    <header class="hero">
+      <p class="kicker">17:40 之前</p>
+      <h1>收干净再走</h1>
+    </header>
+
+    <section class="sec">
+      <ol class="num-list">
+        <li><b>反馈发完</b>最晚周日</li>
+        <li><b>还表</b>交回小路老师</li>
+        <li><b>签字报备</b>17:40 走</li>
+        <li><b>工资问财务周老师</b>不问任课老师</li>
+      </ol>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><h2>交给下一位</h2><span class="hint">复制下面这段就够</span></div>
+      <div class="prompt">
+        <div class="prompt-head">
+          <span class="ptitle">交接指令</span>
+          <button class="copy-btn" type="button">复制</button>
+        </div>
+        <pre>你接手周六助教。
+
+【时间】8:00 到场，17:40 收工；A 08:20、B 10:40、C 13:30、D 15:40。
+【开工】三楼小路工位拿考勤表（架子最上，封面周五的合订本），按人数数课前测放老师桌上，再跟老师打招呼。
+【每班四步】课前测 → 考勤拍照 → 改作业 → 录表发反馈；一件做完就报备。
+【硬规则】
+1. 以当天考勤表为准。
+2. 群里所有老师的班都打考勤，漏班是事故。
+3. 拍照正脸，人数对表；调课的娃勾原班。
+4. 反馈当天发完，班级私发备注「周六X班」，个人发三人群。
+5. 讲次全改 5；订正填上节，全对留空；课前测只有 4 题。
+6. 拿不准就问对应班的老师。
+【中午】12:30 点外卖：武汉体育馆，进门 30 米右转，绿牌上二楼。
+【收工】反馈发完 → 还表 → 签字报备；工资问财务周老师。</pre>
+      </div>
+    </section>
+  </section>
+
+  <!-- 06 老师差异 -->
+  <section class="view" id="teachers">
+    <header class="hero">
+      <p class="kicker">老师差异 · 参照</p>
+      <h1>按人查，别统一</h1>
+    </header>
+
+    <section class="sec">
+      <div class="tblwrap">
+        <table class="diff">
+          <colgroup><col style="width:16%"><col style="width:28%"><col style="width:28%"><col style="width:28%"></colgroup>
+          <thead><tr><th>项目</th><th>春晓</th><th>王琴</th><th>余姝彤</th></tr></thead>
+          <tbody>
+            <tr><th>考勤</th><td>打</td><td>A 打；C、D 不打</td><td>打</td></tr>
+            <tr><th>改作业</th><td>改；提升题不管</td><td>A 班改</td><td>她在就改</td></tr>
+            <tr><th>纸质表</th><td>不用</td><td>C、D 只做纸质</td><td>都要登记</td></tr>
+            <tr><th>拍照</th><td>只拍错题</td><td class="no">不拍</td><td>错题拍群＋批注</td></tr>
+            <tr><th>班级反馈</th><td>发</td><td>发</td><td>发</td></tr>
+            <tr><th>个人反馈</th><td class="no">不发</td><td>发</td><td>发（5A+ 一对一）</td></tr>
+            <tr><th>注意</th><td>A+ 写了才拍</td><td>别替她打考勤</td><td>全班同分按她说</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><h2>非数学</h2></div>
+      <ul class="tips">
+        <li><b>语文向老师、英语黄佳/杨老师</b>只打考勤；英语自己发反馈</li>
+        <li><b>群里每个老师都加</b>说你是新助教</li>
+      </ul>
+    </section>
+  </section>
+
+  <!-- 07 周日 -->
+  <section class="view" id="sun">
+    <header class="hero">
+      <p class="kicker">周日 · 另一套</p>
+      <h1>别拿周六的习惯套</h1>
+    </header>
+
+    <section class="sec">
+      <ul class="tips">
+        <li><b>08:00–15:50</b>200/天；D 点没班不计</li>
+        <li><b>周日 B 元调</b>只改作业＋拍错题＋纸质登记，不录数据</li>
+        <li><b>周日 C 大牛</b>账号 dn / ljj；话术加「有积分奖励」；必会表 勾 / 三角 / 叉；试听不建群</li>
+        <li><b>换班</b>提前说清谁来、谁登微信</li>
+        <li><b>四六级、口试</b>提前定人，别等到周五</li>
+      </ul>
+    </section>
+    <p class="end"><b>周日照样管用：</b>拍照核人数、数字不出范围、名字不发错。</p>
+  </section>
+
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.tabs a, .rail a'));
+
+  function titleOf(id){
+    var h = document.querySelector('#' + id + ' .hero h1, #' + id + ' .vlog h1');
+    return h ? h.textContent.trim() : '';
+  }
+
+  function render(){
+    var id = (location.hash || '#day').replace('#','');
+    var hit = false;
+    views.forEach(function(v){
+      var on = (v.id === id);
+      v.classList.toggle('active', on);
+      if (on) { hit = true; }
+    });
+    if (!hit) { id = views[0].id; views[0].classList.add('active'); }
+    links.forEach(function(a){
+      a.classList.toggle('on', a.getAttribute('href') === '#' + id);
+    });
+    document.title = (id === 'day' ? '助教手册 · 值班全流程' : titleOf(id) + '｜助教手册');
+    window.scrollTo(0,0);
+  }
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+  window.addEventListener('hashchange', render);
+  window.addEventListener('load', render);
+  render();
+
+  var toastEl = null, toastTimer = null;
+  function toast(msg){
+    if (!toastEl){
+      toastEl = document.createElement('div');
+      toastEl.className = 'toast';
+      toastEl.setAttribute('role','status');
+      document.body.appendChild(toastEl);
+    }
+    toastEl.textContent = msg;
+    void toastEl.offsetWidth;
+    toastEl.classList.add('show');
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(function(){ toastEl.classList.remove('show'); }, 1600);
+  }
+
+  function legacyCopy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly','readonly');
+    ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, ta.value.length);
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch(e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.copy-btn'), function(btn){
+    btn.addEventListener('click', function(){
+      var pre = btn.closest('.prompt').querySelector('pre');
+      if (legacyCopy(pre.textContent)){
+        btn.dataset.copied = 'true';
+        btn.textContent = '已复制';
+        toast('已复制到剪贴板');
+        window.setTimeout(function(){
+          btn.dataset.copied = 'false';
+          btn.textContent = '复制';
+        }, 1600);
+      } else {
+        toast('复制失败，请手动选中');
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
